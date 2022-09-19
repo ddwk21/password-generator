@@ -9,23 +9,38 @@ const chars = {
   number: "1234567890"
 }//Object containing strings of all password chars
 
+var password;
 
 
+let currentCharType;
 const charGen = [
   function upperCase(){
-    return chars.upperCase[Math.floor(Math.random * chars.upperCase.length)];
+    let index = Math.floor(Math.random() * chars.upperCase.length)
+    currentCharType = "upper";
+    let value = chars.upperCase.charAt(index);
+    console.log(value)
+    return value;
   },
 
   function lowerCase(){
-    return chars.lowerCase[Math.floor(Math.random * chars.lowerCase.length)];
+    let index = Math.floor(Math.random() * chars.lowerCase.length)
+    currentCharType = "lower";
+    let value = chars.lowerCase.charAt(index);
+    return value;
   },
 
   function specialChar(){
-    return chars.specialChar[Math.floor(Math.random * chars.specialChar.length)];
+    let index = Math.floor(Math.random() * chars.specialChar.length)
+    currentCharType = "special";
+    let value = chars.specialChar.charAt(index);
+    return value;
   },
 
   function number(){
-    return chars.number[Math.floor(Math.random * chars.number.length)];
+    let index = Math.floor(Math.random() * chars.number.length)
+    currentCharType = "number";
+    let value = chars.number.charAt(index);
+    return value;
   },
 ];
 
@@ -34,35 +49,80 @@ let specialYes;
 let numberYes;
 let passLength; */
 //made truthy on affirmative prompt
+var genPassword = "";
+var upperYes;
+var specialYes;
+var numberYes;
+var lowerYes = "y";
+var passwordLength;
 
 function generatePassword(){
-  let upperYes = prompt("Use uppercase characters? \n\ny/n");
-  let specialYes = prompt("Use special characters?\n\ny/n");
-  let numberYes = prompt("Use numbers?\n\ny/n");
-  let passwordLength;
+  upperYes = prompt("Use uppercase characters? \n\ny/n");
+  specialYes = prompt("Use special characters?\n\ny/n");
+  numberYes = prompt("Use numbers?\n\ny/n");
+  lowerYes = "y";
 
   function lengthCheck(){
     console.log("length-check");
     let passLength = prompt("How long would you like your password to be?\n\nPlease enter a number between 8-128");
+    console.log(passLength);
 
     if(isNaN(passLength)||passLength<=7||passLength>=129&&passLength!=null){
       lengthValid = false;
-      alert("You entered an invalid password length! Please re-enter");
-      lengthCheck();
-    }
-    else if(passLength == null){
-      alert("You have canceled, please begin again.");
+      alert("You entered an invalid password length!");
+      return;
     }
     else{
-      passwordLength = passLength;
+      return passLength;
     };
-  }
+  };
 
-  lengthCheck();
+  passwordLength = lengthCheck();
+  if(passwordLength == null){
+    alert("Operation canceled, please begin again.");
+    return;
+  };
+  
+  genMath();
+ 
 }
-// Write password to the #password input
+
+function genMath(){
+  
+  while(genPassword.length<passwordLength){
+
+  console.log("loop");
+
+  function charToAdd(){
+    
+    let rdmFunc = charGen[Math.floor(Math.random() * charGen.length)];
+
+    return rdmFunc();
+
+  }
+  let newChar = charToAdd();
+  console.log(newChar);
+  if(currentCharType=="upper"&&upperYes=="y"){
+    genPassword += newChar;
+  }
+  else if(currentCharType=="number"&&numberYes=="y"){
+    genPassword += newChar;
+  }
+  else if(currentCharType=="special"&&specialYes=="y"){
+    genPassword += newChar;
+  }
+  else if(currentCharType=="lower"&&lowerYes=="y"){
+    genPassword += newChar;
+  }
+  
+  console.log(genPassword);
+}
+password = genPassword; //assign generated password to global password
+return;
+};
+
 function writePassword() {
-  var password = generatePassword();
+  generatePassword();
   var passwordText = document.querySelector("#password");
 
   passwordText.value = password;
