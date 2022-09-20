@@ -56,7 +56,8 @@ var numberYes;
 var lowerYes = "y";
 var passwordLength;
 
-function generatePassword(){
+//setParameters() defines parameters for password.
+function setParameters(){
   upperYes = prompt("Use uppercase characters? \n\ny/n");
   specialYes = prompt("Use special characters?\n\ny/n");
   numberYes = prompt("Use numbers?\n\ny/n");
@@ -86,6 +87,7 @@ function generatePassword(){
   genMath();
  
 }
+
 
 function genMath(){
   
@@ -122,7 +124,7 @@ return;
 };
 
 function writePassword() {
-  generatePassword();
+  setParameters();
   var passwordText = document.querySelector("#password");
 
   passwordText.value = password;
